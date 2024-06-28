@@ -14,6 +14,7 @@ add_library(
 
 #----------------------------- LINK LIBRARIES -----------------------------#
 
+add_subdirectory(third_party)
 add_subdirectory(common)
 add_subdirectory(Connection)
 add_subdirectory(Initializer)

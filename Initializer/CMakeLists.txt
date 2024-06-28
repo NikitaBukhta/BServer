@@ -17,6 +17,12 @@ target_include_directories(
     public/include
 )
 
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    private/include
+)
+
 #----------------------------- LINK LIBRARIES -----------------------------#
 
 set(
@@ -24,8 +30,19 @@ set(
     bserver_connectionhandler
 )
 
+set(
+    PRIVATE_LIBS
+    spdlog::spdlog
+)
+
 target_link_libraries(
     ${PROJECT_NAME}
     PUBLIC
     ${PUBLIC_LIBS}
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    ${PRIVATE_LIBS}
 )
