@@ -1,5 +1,7 @@
 #include "MessageReader.hpp"
 
+#include "spdlog/spdlog.h"
+
 #include <sstream>
 
 namespace server::connection {
@@ -15,7 +17,10 @@ std::string MessageReader::read(void) {
     std::string read_buf;
     std::stringstream ret_buf;
 
+    spdlog::info("Reading socket: ", m_socket->to_string());
+
     while (m_socket->read(read_buf, m_read_buf_size) > 0) {
+        spdlog::debug("read ", read_buf.size(), " bytes | data: ", read_buf);
         ret_buf << read_buf;
         read_buf.clear();
     }

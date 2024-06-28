@@ -30,8 +30,19 @@ set(
     bserver_common_config
 )
 
+set(
+    PRIVATE_LIBS
+    spdlog::spdlog
+)
+
 target_link_libraries(
     ${PROJECT_NAME}
     PUBLIC
     ${PUBLIC_LIBS}
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    ${PRIVATE_LIBS}
 )
