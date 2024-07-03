@@ -24,9 +24,18 @@ ServerInitializer::ServerInitializer(std::uint16_t port, std::uint32_t listen_si
 void ServerInitializer::run(void) {
     spdlog::info("called");
 
-    m_socket->init();
-    m_socket->bind();
-    m_socket->listen(m_listen_size);
+    if (m_socket->init()) {
+        spdlog::critical("Server socket create error. {}", m_socket->latest_error());
+        abort();
+    }
+    if (m_socket->bind()) {
+        spdlog::critical("impossible to bind. {}", m_socket->latest_error());
+        abort();
+    }
+    if (m_socket->listen(m_listen_size)) {
+        spdlog::critical("impossible to listen. {}", m_socket->latest_error());
+        abort();
+    }
 
     m_thread_pull.reserve(1);
 

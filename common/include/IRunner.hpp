@@ -5,7 +5,7 @@ namespace server::common {
 
 class IRunner {
 public:
-    virtual void run(void);
+    virtual void run(void) = 0;
 };
 
 }   // !server::common;

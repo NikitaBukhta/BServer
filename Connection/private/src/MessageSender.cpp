@@ -13,11 +13,11 @@ MessageSender::MessageSender(std::weak_ptr<common::Socket> socket)
 }
 
 std::int32_t MessageSender::send(const std::string& data) {
-    spdlog::debug("bytes count = ", data.size(), " | data = ", data);
+    spdlog::debug("bytes count = {} | data = {}", data.size(), data);
 
     std::int32_t data_sent = m_socket->send(data);
 
-    spdlog::info("sent ", data_sent, " bytes");
+    spdlog::info("sent {} bytes", data_sent);
 
     return data_sent;
 }

@@ -12,6 +12,7 @@
 namespace server::initializer {
 
 class ServerInitializer : public common::IRunner {
+public:
     ServerInitializer(std::uint16_t port, std::uint32_t listen_size, std::weak_ptr<connection::IMessageContentHandler> message_content_handler);
 
     void run(void) override;

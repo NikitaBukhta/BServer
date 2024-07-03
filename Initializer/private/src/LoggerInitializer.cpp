@@ -1,4 +1,5 @@
 #include "LoggerInitializer.hpp"
+#include "config.hpp"
 
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -15,10 +16,12 @@ void LoggerInitializer::init() {
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/logs.txt", true);
 
-    console_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [thread %t] [log #%L] [class %!] %v");
-    file_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [thread %t] [log #%L] [class %!] %v");
+    console_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [thread %t] [%s][%!] [line %#] %v");
+    file_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [thread %t] [%s][%!] [line %#] %v");
 
-    auto logger = std::make_shared<spdlog::logger>("multi_sink", spdlog::sinks_init_list{ console_sink, file_sink });
+    console_sink->set_color_mode(spdlog::color_mode::always);
+
+    auto logger = std::make_shared<spdlog::logger>(common::config::LOG_DOMAIN, spdlog::sinks_init_list{ console_sink, file_sink });
     spdlog::set_default_logger(logger);
     spdlog::set_level(spdlog::level::debug);
     spdlog::flush_on(spdlog::level::debug);

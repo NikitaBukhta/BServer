@@ -18,10 +18,12 @@ add_subdirectory(third_party)
 add_subdirectory(common)
 add_subdirectory(Connection)
 add_subdirectory(Initializer)
+add_subdirectory(HttpHandler)
 
 set(
     PUBLIC_LIBS
     bserver_initializer
+    server_httphandler
 )
 
 target_link_libraries(

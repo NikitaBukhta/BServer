@@ -17,10 +17,10 @@ std::string MessageReader::read(void) {
     std::string read_buf;
     std::stringstream ret_buf;
 
-    spdlog::info("Reading socket: ", m_socket->to_string());
+    spdlog::info("Reading socket = {}", m_socket->to_string());
 
     while (m_socket->read(read_buf, m_read_buf_size) > 0) {
-        spdlog::debug("read ", read_buf.size(), " bytes | data: ", read_buf);
+        spdlog::debug("read = {} bytes | data = {} ", read_buf.size(), read_buf);
         ret_buf << read_buf;
         read_buf.clear();
     }
