@@ -9,9 +9,23 @@ namespace server::connection {
 
 class MessageReader {
 public:
+    enum class MessageStatusEnum : int8_t {
+        ERROR = -1,
+        DISCONNECT = 0,
+        SUCCESS = 1,
+        COUNT = 3
+    };
+
+public:
     MessageReader(std::weak_ptr<common::Socket> socket, std::int32_t read_buf_size = BUFSIZ);
 
-    std::string read(void);
+    /* Return values:
+     *  std::string - read content;
+     *  std::int32_t - bytes read. if read size == -1, the error was occured;
+     */
+    std::pair<std::string, MessageStatusEnum> read(void);
+
+    std::string lastest_error(void);
 
 private:
     std::shared_ptr<common::Socket> m_socket;

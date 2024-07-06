@@ -8,7 +8,7 @@ namespace server::http
 
 class HttpMessageContentHandler : public connection::IMessageContentHandler {
 public:
-    std::string handle_message(const std::string& data) override;
+    std::shared_ptr<connection::IContent> handle_message(const std::string& data) override;
 };
 
 }   // !server::http;

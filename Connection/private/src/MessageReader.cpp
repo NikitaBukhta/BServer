@@ -16,22 +16,29 @@ MessageReader::MessageReader(std::weak_ptr<common::Socket> socket, std::int32_t 
     LOG_INFO("called");
 }
 
-std::string MessageReader::read(void) {
+std::pair<std::string, MessageReader::MessageStatusEnum> MessageReader::read(void) {
     DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
     LOG_INFO("Reading socket = {}", m_socket->to_string());
 
     std::string read_buf;
-    std::stringstream ret_buf;
+    MessageReader::MessageStatusEnum read_status = MessageStatusEnum::ERROR;
 
-    while (m_socket->read(read_buf, m_read_buf_size) > 0) {
-        LOG_DEBUG("read = {} bytes | data = {} ", read_buf.size(), read_buf);
-        ret_buf << read_buf;
-        read_buf.clear();
+    auto bytes_read = m_socket->read(read_buf, m_read_buf_size) > 0;
+    LOG_DEBUG("read = {} bytes | data = {} ", read_buf.size(), read_buf);
+
+    if (bytes_read == -1) {
+        read_status = MessageStatusEnum::ERROR;
+    } else if (bytes_read == 0) {
+        read_status = MessageStatusEnum::DISCONNECT;
+    } else if (bytes_read > 0) {
+        read_status = MessageStatusEnum::SUCCESS;
     }
 
-    LOG_DEBUG("finished");
+    return {read_buf, read_status};
+}
 
-    return ret_buf.str();
+std::string MessageReader::lastest_error(void) {
+    return std::move(m_socket->latest_error());
 }
 
 }   // !server::connection;

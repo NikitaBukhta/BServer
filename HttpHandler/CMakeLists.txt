@@ -17,6 +17,12 @@ target_include_directories(
     public/include
 )
 
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    private/include
+)
+
 #----------------------------- LINK LIBRARIES -----------------------------#
 
 set(
