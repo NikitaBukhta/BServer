@@ -25,8 +25,8 @@ void LoggerInitializer::init() {
     spdlog::set_default_logger(logger);
     spdlog::set_level(spdlog::level::debug);
     spdlog::flush_on(spdlog::level::debug);
-
-    spdlog::info("Logger initialized");
+    
+    SPDLOG_LOGGER_INFO(logger, "Logger initialized");
 }
 
 }   // !server::initializer;

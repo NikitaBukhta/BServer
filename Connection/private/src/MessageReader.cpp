@@ -1,5 +1,7 @@
 #include "MessageReader.hpp"
 
+#include "config.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <sstream>
@@ -10,20 +12,24 @@ MessageReader::MessageReader(std::weak_ptr<common::Socket> socket, std::int32_t 
     : m_socket{socket.lock()}
     , m_read_buf_size{read_buf_size}
 {
-
+    DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
+    LOG_INFO("called");
 }
 
 std::string MessageReader::read(void) {
+    DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
+    LOG_INFO("Reading socket = {}", m_socket->to_string());
+
     std::string read_buf;
     std::stringstream ret_buf;
 
-    spdlog::info("Reading socket = {}", m_socket->to_string());
-
     while (m_socket->read(read_buf, m_read_buf_size) > 0) {
-        spdlog::debug("read = {} bytes | data = {} ", read_buf.size(), read_buf);
+        LOG_DEBUG("read = {} bytes | data = {} ", read_buf.size(), read_buf);
         ret_buf << read_buf;
         read_buf.clear();
     }
+
+    LOG_DEBUG("finished");
 
     return ret_buf.str();
 }

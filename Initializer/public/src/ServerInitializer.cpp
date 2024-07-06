@@ -1,6 +1,8 @@
 #include "ServerInitializer.hpp"
 #include "LoggerInitializer.hpp"
 
+#include "config.hpp"
+
 #include "spdlog/spdlog.h"
 
 #include <thread>
@@ -12,28 +14,30 @@ ServerInitializer::ServerInitializer(std::uint16_t port, std::uint32_t listen_si
 {
     LoggerInitializer::init();
 
-    spdlog::info("constructor started");
+    DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
+    LOG_INFO("constructor started");
 
     m_socket = std::make_shared<common::Socket>();
     m_socket->set_port(port);
     m_connection_handler = std::make_unique<connection::ConnectionHandler>(m_socket, message_content_handler);
 
-    spdlog::debug("constructor finished");
+    LOG_DEBUG("constructor finished");
 }
 
 void ServerInitializer::run(void) {
-    spdlog::info("called");
+    DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
+    LOG_INFO("called");
 
     if (m_socket->init()) {
-        spdlog::critical("Server socket create error. {}", m_socket->latest_error());
+        LOG_CRITICAL("Server socket create error. {}", m_socket->latest_error());
         abort();
     }
     if (m_socket->bind()) {
-        spdlog::critical("impossible to bind. {}", m_socket->latest_error());
+        LOG_CRITICAL("impossible to bind. {}", m_socket->latest_error());
         abort();
     }
     if (m_socket->listen(m_listen_size)) {
-        spdlog::critical("impossible to listen. {}", m_socket->latest_error());
+        LOG_CRITICAL("impossible to listen. {}", m_socket->latest_error());
         abort();
     }
 
