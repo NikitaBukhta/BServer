@@ -98,11 +98,11 @@ Socket Socket::accept() {
     return accepted_socket;
 }
 
-std::int32_t Socket::send(const std::string& data) {
+std::int32_t Socket::send(const std::string& data) const {
     return ::send(m_socket_fd, data.c_str(), data.size(), 0);
 }
 
-std::int32_t Socket::sendfile(const File& file) {
+std::int32_t Socket::sendfile(const File& file) const {
     off_t offset{0};
 
     while (offset < file.size()) {

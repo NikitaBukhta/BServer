@@ -46,7 +46,6 @@ void ConnectionHandler::handle_connect(std::weak_ptr<common::Socket> weak_client
     LOG_INFO("Socket = {}", client_socket->to_string());
 
     MessageReader reader{client_socket};
-    MessageSender sender{client_socket};
     bool reading_finished{false};
 
     do {
@@ -57,9 +56,8 @@ void ConnectionHandler::handle_connect(std::weak_ptr<common::Socket> weak_client
                 if (response->is_empty()) {
                     continue;
                 }
-                
                 reading_finished = true;
-                sender.send(response);
+                response->send(client_socket);
                 break;
             }
             case MessageReader::MessageStatusEnum::ERROR:

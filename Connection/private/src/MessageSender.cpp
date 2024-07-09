@@ -19,16 +19,16 @@ std::int32_t MessageSender::send(const std::weak_ptr<IContent> content_weak) {
     DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
     LOG_DEBUG("called");
 
-    auto content = content_weak.lock();
-    auto data = content->content();
+    // auto content = content_weak.lock();
+    // auto data = content->content();
 
-    if (auto value = std::get_if<std::string>(&data)) {
-        return send_text(*value);
-    } else if (auto value = std::get_if<common::File>(&data)) {
-        return send_file(*value);
-    } else {
-        LOG_WARNING("Data type doesn't handled")
-    }
+    // if (auto value = std::get_if<std::string>(&data)) {
+    //     return send_text(*value);
+    // } else if (auto value = std::get_if<common::File>(&data)) {
+    //     return send_file(*value);
+    // } else {
+    //     LOG_WARNING("Data type doesn't handled")
+    // }
 
     return -1;
 }

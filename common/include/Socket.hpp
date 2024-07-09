@@ -33,8 +33,8 @@ public:
     std::int32_t bind();
     std::int32_t listen(std::int32_t count);
     Socket accept();
-    std::int32_t send(const std::string& data);
-    std::int32_t sendfile(const File& file);
+    std::int32_t send(const std::string& data) const;
+    std::int32_t sendfile(const File& file) const;
     std::int32_t read(std::string &ret_buf, std::int32_t max_buf_size);
     std::int32_t close();
 
