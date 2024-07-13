@@ -28,6 +28,7 @@ std::pair<std::string, MessageReader::MessageStatusEnum> MessageReader::read(voi
 
     if (bytes_read == -1) {
         read_status = MessageStatusEnum::ERROR;
+        LOG_ERROR(m_socket->latest_error());
     } else if (bytes_read == 0) {
         read_status = MessageStatusEnum::DISCONNECT;
     } else if (bytes_read > 0) {

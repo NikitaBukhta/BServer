@@ -48,20 +48,20 @@ void ConnectionHandler::handle_connect(std::weak_ptr<common::Socket> weak_client
     MessageReader reader{client_socket};
     bool reading_finished{false};
 
-    do {
+    while (client_socket->is_valid()) {
         auto [data, read_status] = reader.read();
         switch (read_status) {
             case MessageReader::MessageStatusEnum::SUCCESS: {
                 auto response = m_message_content_handler->handle_message(data);
-                if (response->is_empty()) {
-                    continue;
+
+                if (response.get() && !response->is_empty()) {
+                    response->send(client_socket);
                 }
-                reading_finished = true;
-                response->send(client_socket);
                 break;
             }
             case MessageReader::MessageStatusEnum::ERROR:
-                LOG_ERROR("Error during read. {}", reader.lastest_error());
+                LOG_ERROR("Error during read. {}. Data size = {}", reader.lastest_error(), data.size());
+                break;
                 // miss the break to close the connection in the default block;
 
             default:
@@ -69,8 +69,8 @@ void ConnectionHandler::handle_connect(std::weak_ptr<common::Socket> weak_client
                 // TODO: Implement Disconnector class to disconnect;
                 client_socket->close();
                 break;
-        };
-    } while (!reading_finished);
+        }
+    }
 }
 
 }   // !server::connection;
