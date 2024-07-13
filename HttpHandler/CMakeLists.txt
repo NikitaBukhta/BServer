@@ -28,6 +28,7 @@ target_include_directories(
 set(
     PUBLIC_LIBS
     bserver_connectionhandler
+    picohttpparser
 )
 
 set(
