@@ -33,10 +33,10 @@ std::shared_ptr<connection::IContentSender> HttpMessageContentHandler::handle_me
 std::shared_ptr<connection::IContentSender> HttpMessageContentHandler::on_completed(HttpHeader& header) {
     DECLARE_TAG_SCOPE(common::config::LOG_DOMAIN);
     std::stringstream headers;
-    for (auto header : header.m_headers) {
+    for (const auto header : header.headers()) {
         headers << header.first << ": " << header.second << std::endl;
     }
-    LOG_INFO("Method type = {} | path = {} | http version = 1.{} | headers = {}", header.m_method, header.m_path, header.m_minor_version, headers.str());
+    LOG_INFO("Method type = {} | path = {} | http version = 1.{} | headers = {}", header.method(), header.path(), header.minor_version(), headers.str());
 
     m_buffer_ss.str("");
     m_buffer_ss.clear();
